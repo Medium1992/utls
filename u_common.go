@@ -651,7 +651,12 @@ var (
 	// the Chrome Root Store trust anchor IDs. See testdata/chrome155_clienthello.md.
 	HelloChrome_155 = ClientHelloID{helloChrome, "155", nil, nil}
 
-	HelloIOS_Auto = HelloIOS_14
+	// iOS Safari shares the TLS stack of macOS Safari: JA4 databases show the
+	// same extension hash for both at each version (Safari 26: 8851b56df051;
+	// Safari 27 on macOS: 7f0f34a4126d, Safari 26.3's). iOS 14's ClientHello,
+	// with no ML-KEM key share, is long gone.
+	HelloIOS_Auto = HelloIOS_26
+	HelloIOS_26   = ClientHelloID{helloIOS, "26", nil, nil}
 	HelloIOS_11_1 = ClientHelloID{helloIOS, "111", nil, nil} // legacy "111" means 11.1
 	HelloIOS_12_1 = ClientHelloID{helloIOS, "12.1", nil, nil}
 	HelloIOS_13   = ClientHelloID{helloIOS, "13", nil, nil}
@@ -659,9 +664,11 @@ var (
 
 	HelloAndroid_11_OkHttp = ClientHelloID{helloAndroid, "11", nil, nil}
 
-	HelloEdge_Auto = HelloEdge_85 // HelloEdge_106 seems to be incompatible with this library
+	HelloEdge_Auto = HelloEdge_157
 	HelloEdge_85   = ClientHelloID{helloEdge, "85", nil, nil}
 	HelloEdge_106  = ClientHelloID{helloEdge, "106", nil, nil}
+	// Edge 157 sends Chrome 155's ClientHello without trust_anchors.
+	HelloEdge_157 = ClientHelloID{helloEdge, "157", nil, nil}
 
 	HelloSafari_Auto = HelloSafari_26_3
 	HelloSafari_16_0 = ClientHelloID{helloSafari, "16.0", nil, nil}

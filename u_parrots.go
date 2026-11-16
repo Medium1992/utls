@@ -964,6 +964,19 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				&UtlsGREASEExtension{},
 			}),
 		}, nil
+	case HelloEdge_157:
+		spec, err := utlsIdToSpec(HelloChrome_155)
+		if err != nil {
+			return spec, err
+		}
+		extensions := spec.Extensions[:0]
+		for _, extension := range spec.Extensions {
+			if _, ok := extension.(*TrustAnchorsExtension); !ok {
+				extensions = append(extensions, extension)
+			}
+		}
+		spec.Extensions = extensions
+		return spec, nil
 	case HelloChrome_155:
 		return ClientHelloSpec{
 			CipherSuites: []uint16{
@@ -2444,6 +2457,8 @@ func utlsIdToSpec(id ClientHelloID) (ClientHelloSpec, error) {
 				},
 			},
 		}, nil
+	case HelloIOS_26:
+		return utlsIdToSpec(HelloSafari_26_3)
 	case HelloSafari_26_3:
 		return ClientHelloSpec{
 			TLSVersMin: VersionTLS12,
